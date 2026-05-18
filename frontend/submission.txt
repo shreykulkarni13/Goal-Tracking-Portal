@@ -1,0 +1,44 @@
+PROJECT NAME:
+Goal Tracking Portal
+
+DESCRIPTION:
+A role-based employee goal tracking system where employees can add goals, managers can approve/reject them, and admins can monitor overall activity.
+
+FEATURES:
+- Employee goal creation
+- Manager approval/rejection
+- Admin dashboard
+- Persistent storage using localStorage
+- Responsive modern UI
+- Live deployment
+
+TECH STACK:
+Frontend:
+- React
+- CSS
+- Vite
+
+Backend:
+- Python Flask (planned architecture)
+
+Storage:
+- localStorage
+
+DEPLOYMENT:
+Vercel
+
+GITHUB REPOSITORY:
+https://github.com/shreykulkarni13/ATOMBERGsolution
+
+LIVE PROJECT LINK:
+https://atomber-gsolution.vercel.app/
+
+FUTURE IMPROVEMENTS:
+- Database integration
+- Authentication system
+- Real backend APIs
+- Analytics dashboard
+- Team collaboration features
+
+DEVELOPER:
+Shrey Kulkarni
