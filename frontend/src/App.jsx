@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
   const [role, setRole] = useState("");
-  const [goals, setGoals] = useState([]);
+  const [goals, setGoals] = useState(() => {
+  const savedGoals = localStorage.getItem("goals");
+  return savedGoals ? JSON.parse(savedGoals) : [];
+});
+
+useEffect(() => {
+  localStorage.setItem("goals", JSON.stringify(goals));
+}, [goals]);
+
   const [goalTitle, setGoalTitle] = useState("");
 
   const addGoal = () => {
