@@ -1,16 +1,48 @@
-# React + Vite
+# Goal Tracking Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A role-based employee goal tracking system built for AtomQuest Hackathon.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Employee can add goals
+- Manager can approve/reject goals
+- Admin can view all goals
+- Modern responsive UI
+- Persistent storage using localStorage
+- Live deployed application
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Frontend:
+- React
+- CSS
+- Vite
 
-## Expanding the ESLint configuration
+Backend:
+- Python Flask (planned structure)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Storage:
+- Browser localStorage
+
+Deployment:
+- Vercel
+
+## Live Project
+
+https://atomber-gsolution.vercel.app/
+
+## GitHub Repository
+
+https://github.com/shreykulkarni13/ATOMBERGsolution
+
+## Future Improvements
+
+- Firebase/MongoDB integration
+- User authentication
+- Real backend APIs
+- Analytics dashboard
+- Team management system
+
+## Developed By
+
+Shrey Kulkarni
