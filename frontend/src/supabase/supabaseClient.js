@@ -1,11 +1,31 @@
-// frontend/src/supabase/supabaseClient.js
+import { createClient } from "@supabase/supabase-js";
 
-import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+if (!supabaseUrl) {
+  throw new Error(
+    "VITE_SUPABASE_URL is missing from .env"
+  );
+}
+
+if (!supabaseKey) {
+  throw new Error(
+    "VITE_SUPABASE_ANON_KEY is missing from .env"
+  );
+}
+
+console.log("Supabase URL:", supabaseUrl);
+console.log("Supabase Connected ✅");
 
 export const supabase = createClient(
   supabaseUrl,
-  supabaseKey
-)
+  supabaseKey,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+    },
+  }
+);
