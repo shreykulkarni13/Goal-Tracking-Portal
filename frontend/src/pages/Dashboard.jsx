@@ -63,23 +63,7 @@ function Dashboard()
 
   return (
     <div>
-      <h1>Dashboard</h1>
-
-      {profile && (
-     <div>
-       <h2>Welcome {profile.full_name}</h2>
-
-       <p>Email: {profile.email}</p>
-
-       <p>Role: {profile.role}</p>
-
-       <p>Department: {profile.department}</p>
-     </div>
-       )}
-
-      <button onClick={handleLogout}>
-        Logout
-      </button>
+      <h2>Loading...</h2>
     </div>
   );
 }
