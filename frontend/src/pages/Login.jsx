@@ -2,7 +2,8 @@ import { useState } from "react";
 import { supabase } from "../supabase/supabaseClient";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login() 
+{
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,35 +31,44 @@ function Login() {
 
   return (
     <div>
-      <h1>Login</h1>
+    <h1>Login</h1>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) =>
-          setEmail(e.target.value)
-        }
-      />
+    <input
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) =>
+        setEmail(e.target.value)
+      }
+    />
 
-      <br />
-      <br />
+    <br />
+    <br />
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) =>
-          setPassword(e.target.value)
-        }
-      />
+    <input
+      type="password"
+      placeholder="Password"
+      value={password}
+      onChange={(e) =>
+        setPassword(e.target.value)
+      }
+    />
 
-      <br />
-      <br />
+    <br />
+    <br />
 
-      <button onClick={handleLogin}>
-        Login
-      </button>
+    <button onClick={handleLogin}>
+      Login
+    </button>
+
+    <br />
+    <br />
+
+    <button
+      onClick={() => navigate("/signup")}
+    >
+      Create New Account
+    </button>
     </div>
   );
 }
