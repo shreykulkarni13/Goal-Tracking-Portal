@@ -35,9 +35,21 @@ function Dashboard()
   console.log("PROFILE:", data);
   console.log("PROFILE ERROR:", error);
 
-  if (data) {
-    setProfile(data);
-  }
+  if (data)
+     {
+        if (data.role === "employee")
+        {
+          navigate("/employee");
+        }
+        else if (data.role === "manager")
+        {
+          navigate("/manager");
+        }
+        else if (data.role === "admin")
+        {
+          navigate("/admin");
+        }
+     }
  }
 
  async function handleLogout() 
