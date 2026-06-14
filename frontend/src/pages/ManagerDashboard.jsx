@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase/supabaseClient";
 
@@ -7,7 +7,24 @@ function ManagerDashboard() {
 
   useEffect(() => {
     checkRole();
+    fetchGoals();
   }, []);
+
+  const [goals, setGoals] = useState([]);
+
+  async function fetchGoals() 
+  {
+       const { data, error } = await supabase
+         .from("goals")
+         .select("*");
+     
+       console.log("GOALS:", data);
+       console.log("GOALS ERROR:", error);
+     
+       if (data) {
+         setGoals(data);
+       }
+  }
 
   async function checkRole() {
     const {
@@ -39,6 +56,16 @@ function ManagerDashboard() {
     <div>
       
       <h1>Manager Dashboard</h1>
+
+      <h2>Goals</h2>
+
+       {goals.map((goal) => (
+         <div key={goal.id}>
+           <p>Title: {goal.title}</p>
+           <p>Status: {goal.status}</p>
+           <hr />
+         </div>
+       ))}
 
       <button onClick={async () => {
         await supabase.auth.signOut();
