@@ -10,6 +10,33 @@ function ManagerDashboard() {
     fetchGoals();
   }, []);
 
+  async function updateGoalStatus(goalId, newStatus) 
+    {  
+      console.log("GOAL ID:", goalId);
+      console.log("NEW STATUS:", newStatus);
+
+      const { data, error } = await supabase
+        .from("goals")
+        .update({
+          status: newStatus,
+        })
+        .eq("id", goalId)
+        .select();
+
+        console.log("UPDATE DATA:", data);
+    
+      console.log("UPDATE ERROR:", error);
+    
+      if (error) {
+        alert(error.message);
+        return;
+      }
+    
+      alert(`Goal ${newStatus}!`);
+    
+      fetchGoals();
+   }    
+
   const [goals, setGoals] = useState([]);
 
   async function fetchGoals() 
@@ -59,13 +86,32 @@ function ManagerDashboard() {
 
       <h2>Goals</h2>
 
-       {goals.map((goal) => (
-         <div key={goal.id}>
-           <p>Title: {goal.title}</p>
-           <p>Status: {goal.status}</p>
-           <hr />
-         </div>
-       ))}
+       {goals.map((goal) => 
+       (
+               <div key={goal.id}>
+                 <p>Title: {goal.title}</p>
+             
+                 <p>Status: {goal.status}</p>
+             
+                 <button
+                   onClick={() =>
+                     updateGoalStatus(goal.id, "approved")
+                   }
+                 >
+                   Approve
+                 </button>
+             
+                 <button
+                   onClick={() =>
+                     updateGoalStatus(goal.id, "rejected")
+                   }
+                 >
+                   Reject
+                 </button>
+             
+                 <hr />
+               </div>
+        ))}
 
       <button onClick={async () => {
         await supabase.auth.signOut();
