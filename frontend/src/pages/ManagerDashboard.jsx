@@ -121,6 +121,7 @@ function ManagerDashboard() {
             <hr />
           </div>
         ))}
+          {pendingGoals.length === 0 && <p>No pending goals.</p>}   
 
       <h2>Approved Goals</h2>
 
@@ -139,6 +140,7 @@ function ManagerDashboard() {
             <hr />
           </div>
         ))}
+         {approvedGoals.length === 0 && <p>No approved goals.</p>}
 
       <h2>Rejected Goals</h2>
 
@@ -157,6 +159,7 @@ function ManagerDashboard() {
            <hr />
          </div>
         ))}
+          {rejectedGoals.length === 0 && <p>No rejected goals.</p>} 
 
       <button onClick={async () => {
         await supabase.auth.signOut();
