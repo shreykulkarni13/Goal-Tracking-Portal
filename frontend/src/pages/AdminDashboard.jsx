@@ -37,8 +37,19 @@ function AdminDashboard() {
 
   return (
     <div>
+      
       <h1>Admin Dashboard</h1>
+
+      <button onClick={async () => {
+        await supabase.auth.signOut();
+        navigate("/");
+      }}>
+        Logout
+      </button>
+
     </div>
+
+    
   );
 }
 

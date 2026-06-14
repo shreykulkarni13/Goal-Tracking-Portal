@@ -37,7 +37,16 @@ function ManagerDashboard() {
 
   return (
     <div>
+      
       <h1>Manager Dashboard</h1>
+
+      <button onClick={async () => {
+        await supabase.auth.signOut();
+        navigate("/");
+      }}>
+        Logout
+      </button> 
+
     </div>
   );
 }

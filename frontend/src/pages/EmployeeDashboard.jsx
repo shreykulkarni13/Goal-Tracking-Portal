@@ -37,7 +37,16 @@ function EmployeeDashboard() {
 
   return (
     <div>
+      
       <h1>Employee Dashboard</h1>
+
+      <button onClick={async () => {
+        await supabase.auth.signOut();
+        navigate("/");
+      }}>
+        Logout
+      </button>
+
     </div>
   );
 }
