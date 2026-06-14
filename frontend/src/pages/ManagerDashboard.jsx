@@ -37,7 +37,19 @@ function ManagerDashboard() {
       fetchGoals();
    }    
 
-  const [goals, setGoals] = useState([]);
+       const [goals, setGoals] = useState([]);
+     
+       const pendingGoals = goals.filter(
+       (goal) => goal.status === "pending"
+        );
+     
+       const approvedGoals = goals.filter(
+       (goal) => goal.status === "approved"
+        );
+     
+       const rejectedGoals = goals.filter(
+       (goal) => goal.status === "rejected"
+        );
 
   async function fetchGoals() 
   {
@@ -84,33 +96,66 @@ function ManagerDashboard() {
       
       <h1>Manager Dashboard</h1>
 
-      <h2>Goals</h2>
+      <h2>Pending Goals</h2>
 
-       {goals.map((goal) => 
-       (
-               <div key={goal.id}>
-                 <p>Title: {goal.title}</p>
-             
-                 <p>Status: {goal.status}</p>
-             
-                 <button
-                   onClick={() =>
-                     updateGoalStatus(goal.id, "approved")
-                   }
-                 >
-                   Approve
-                 </button>
-             
-                 <button
-                   onClick={() =>
-                     updateGoalStatus(goal.id, "rejected")
-                   }
-                 >
-                   Reject
-                 </button>
-             
-                 <hr />
-               </div>
+        {pendingGoals.map((goal) => (
+          <div key={goal.id}>
+            <p>Title: {goal.title}</p>
+        
+            <button
+              onClick={() =>
+                updateGoalStatus(goal.id, "approved")
+              }
+            >
+              Approve
+            </button>
+        
+            <button
+              onClick={() =>
+                updateGoalStatus(goal.id, "rejected")
+              }
+            >
+              Reject
+            </button>
+        
+            <hr />
+          </div>
+        ))}
+
+      <h2>Approved Goals</h2>
+
+        {approvedGoals.map((goal) => (
+          <div key={goal.id}>
+            <p>Title: {goal.title}</p>
+        
+            <button
+              onClick={() =>
+                updateGoalStatus(goal.id, "pending")
+              }
+            >
+              Reopen
+            </button>
+        
+            <hr />
+          </div>
+        ))}
+
+      <h2>Rejected Goals</h2>
+
+        {rejectedGoals.map((goal) => (
+         <div key={goal.id}>
+           <p>Title: {goal.title}</p>
+       
+           <button
+             onClick={() =>
+               updateGoalStatus(goal.id, "pending")
+             }
+           >
+             Reopen
+           </button>
+       
+           <hr />
+         </div>
         ))}
 
       <button onClick={async () => {
