@@ -53,6 +53,7 @@ function Signup() {
             email: email,
             role: "employee",
             department: department,
+            approval_status: "pending",
           },
         ]);
 

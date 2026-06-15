@@ -12,56 +12,99 @@ function AdminDashboard() {
   const [pendingGoals, setPendingGoals] = useState(0);
   const [approvedGoals, setApprovedGoals] = useState(0);
   const [rejectedGoals, setRejectedGoals] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [pendingUsers, setPendingUsers] = useState([]);
 
   useEffect(() => {
     checkRole();
     fetchStats();
   }, []);
 
-  async function fetchStats() 
-  {
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("role");
-    
-      const { data: goals } = await supabase
-        .from("goals")
-        .select("status");
-    
-      setEmployeeCount(
-        profiles.filter(
-          (user) => user.role === "employee"
-        ).length
-      );
-    
-      setManagerCount(
-        profiles.filter(
-          (user) => user.role === "manager"
-        ).length
-      );
-    
-      setTotalGoals(goals.length);
-    
-      setPendingGoals(
-        goals.filter(
-          (goal) => goal.status === "pending"
-        ).length
-      );
-    
-      setApprovedGoals(
-        goals.filter(
-          (goal) => goal.status === "approved"
-        ).length
-      );
-    
-      setRejectedGoals(
-        goals.filter(
-          (goal) => goal.status === "rejected"
-        ).length
-      );
+async function fetchStats() {
+  const { data: profiles, error: profilesError } = await supabase
+    .from("profiles")
+    .select("*");
 
-      
+  const { data: goals, error: goalsError } = await supabase
+    .from("goals")
+    .select("*");
+
+  console.log("PROFILES:", profiles);
+  console.log("GOALS:", goals);
+
+  if (profilesError) {
+    console.log(profilesError);
+    return;
   }
+
+  if (goalsError) {
+    console.log(goalsError);
+    return;
+  }
+
+  setUsers(profiles);
+
+  setPendingUsers(
+       profiles.filter(
+         (user) => user.approval_status === "pending"
+       )
+    );
+
+  setEmployeeCount(
+    profiles.filter(
+      (user) => user.role === "employee"
+    ).length
+  );
+
+  setManagerCount(
+    profiles.filter(
+      (user) => user.role === "manager"
+    ).length
+  );
+
+  setTotalGoals(goals.length);
+
+  setPendingGoals(
+    goals.filter(
+      (goal) => goal.status === "pending"
+    ).length
+  );
+
+  setApprovedGoals(
+    goals.filter(
+      (goal) => goal.status === "approved"
+    ).length
+  );
+
+  setRejectedGoals(
+    goals.filter(
+      (goal) => goal.status === "rejected"
+    ).length
+  );
+} 
+
+
+  async function updateUserStatus(userId, newStatus) 
+  {
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          approval_status: newStatus,
+        })
+        .eq("id", userId);
+    
+      console.log("USER UPDATE ERROR:", error);
+    
+      if (error) {
+        alert(error.message);
+        return;
+      }
+    
+      alert(`User ${newStatus}!`);
+    
+      fetchStats();
+  }
+
 
   async function checkRole() {
     const {
@@ -75,7 +118,7 @@ function AdminDashboard() {
 
     const { data, error } = await supabase
       .from("profiles")
-      .select("role")
+      .select("*")
       .eq("id", session.user.id)
       .single();
 
@@ -109,7 +152,57 @@ function AdminDashboard() {
          <p>Approved Goals: {approvedGoals}</p>
          
          <p>Rejected Goals: {rejectedGoals}</p>
-         
+       
+
+        <h2>Pending Registrations</h2>
+
+            {pendingUsers.length === 0 && (
+              <p>No Pending Registrations</p>
+            )}
+
+             {pendingUsers.map((user) => (
+               <div key={user.id}>
+                 <p>Name: {user.full_name}</p>
+             
+                 <p>Email: {user.email}</p>
+             
+                 <button
+                   onClick={() =>
+                     updateUserStatus(
+                       user.id,
+                       "approved"
+                     )
+                   }
+                 >
+                   Approve
+                 </button>
+             
+                 <button
+                   onClick={() =>
+                     updateUserStatus(
+                       user.id,
+                       "rejected"
+                     )
+                   }
+                 >
+                   Reject
+                 </button>
+             
+                 <hr />
+               </div>
+             ))}
+
+
+        <h2>All Users</h2>
+
+           {users.map((user) => (
+             <div key={user.id}>
+               <p>Name: {user.full_name}</p>
+               <p>Email: {user.email}</p>
+               <p>Role: {user.role}</p>
+               <hr />
+             </div>
+           ))}
 
       <button onClick={async () => {
         await supabase.auth.signOut();

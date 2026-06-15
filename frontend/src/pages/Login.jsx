@@ -9,25 +9,55 @@ function Login()
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    const { data, error } =
-      await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+const handleLogin = async () => {
+  const { data, error } =
+    await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    console.log("LOGIN DATA:", data);
-    console.log("LOGIN ERROR:", error);
+  console.log("LOGIN DATA:", data);
+  console.log("LOGIN ERROR:", error);
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+  if (error) {
+    alert(error.message);
+    return;
+  }
 
-    alert("Login Successful 🎉");
+  const user = data.user;
 
-    navigate("/dashboard");
-  };
+  const { data: profile, error: profileError } =
+    await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+  console.log("PROFILE:", profile);
+  console.log("PROFILE ERROR:", profileError);
+
+  if (profileError) {
+    alert(profileError.message);
+    await supabase.auth.signOut();
+    return;
+  }
+
+  if (profile.approval_status === "pending") {
+    alert("Your account is awaiting approval.");
+    await supabase.auth.signOut();
+    return;
+  }
+
+  if (profile.approval_status === "rejected") {
+    alert("Your account has been rejected.");
+    await supabase.auth.signOut();
+    return;
+  }
+
+  alert("Login Successful 🎉");
+
+  navigate("/dashboard");
+};
 
   return (
     <div>
