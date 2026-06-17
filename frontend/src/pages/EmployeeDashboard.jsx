@@ -65,25 +65,24 @@ function EmployeeDashboard() {
     setTargetDate("");
   }
 
-  async function completeGoal(goalId) {
-    const { error } = await supabase
-      .from("goals")
-      .update({
-        status: "completed",
-      })
-      .eq("id", goalId);
+async function completeGoal(goalId) {
+  const { error } = await supabase
+    .from("goals")
+    .update({
+      status: "completed",
+      progress: 100,
+    })
+    .eq("id", goalId);
 
-    console.log("COMPLETE ERROR:", error);
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    alert("Goal Completed 🎉");
-
-    fetchGoals();
+  if (error) {
+    alert(error.message);
+    return;
   }
+
+  alert("Goal Completed 🎉");
+
+  fetchGoals();
+}
 
   async function checkRole() {
     const {
@@ -157,6 +156,14 @@ async function updateProgress(goalId) {
   return (
     <div>
       <h1>Employee Dashboard</h1>
+
+      <button
+           onClick={() => navigate("/profile")}
+         >
+           Profile
+      </button>
+
+        <h2>    </h2>
 
       <input
         type="text"

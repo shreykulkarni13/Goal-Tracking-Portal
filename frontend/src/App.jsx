@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -14,21 +15,11 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
 
-       <Route 
-         path="/employee" 
-         element={<EmployeeDashboard />} 
-       />
+        <Route path="/employee" element={<EmployeeDashboard />} />
+        <Route path="/manager" element={<ManagerDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
 
-       <Route 
-         path="/manager" 
-         element={<ManagerDashboard />} 
-        />
-
-       <Route 
-         path="/admin" 
-         element={<AdminDashboard />} 
-        />
-
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
