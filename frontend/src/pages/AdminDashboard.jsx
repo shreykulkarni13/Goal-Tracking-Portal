@@ -12,6 +12,7 @@ function AdminDashboard() {
   const [pendingGoals, setPendingGoals] = useState(0);
   const [approvedGoals, setApprovedGoals] = useState(0);
   const [rejectedGoals, setRejectedGoals] = useState(0);
+  const [completedGoals, setCompletedGoals] = useState(0);
   const [users, setUsers] = useState([]);
   const [pendingUsers, setPendingUsers] = useState([]);
 
@@ -81,6 +82,12 @@ async function fetchStats() {
       (goal) => goal.status === "rejected"
     ).length
   );
+
+  setCompletedGoals(
+    goals.filter(
+      (goal) => goal.status === "completed"
+    ).length
+  );
 } 
 
 
@@ -105,6 +112,27 @@ async function fetchStats() {
       fetchStats();
   }
 
+
+  async function updateUserRole(userId, newRole) 
+  {
+       const { error } = await supabase
+         .from("profiles")
+         .update({
+           role: newRole,
+         })
+         .eq("id", userId);
+     
+       console.log("ROLE UPDATE ERROR:", error);
+     
+       if (error) {
+         alert(error.message);
+         return;
+       }
+     
+       alert(`Role changed to ${newRole}`);
+     
+       fetchStats();
+  }
 
   async function checkRole() {
     const {
@@ -152,6 +180,8 @@ async function fetchStats() {
          <p>Approved Goals: {approvedGoals}</p>
          
          <p>Rejected Goals: {rejectedGoals}</p>
+
+         <p>Completed Goals: {completedGoals}</p>
        
 
         <h2>Pending Registrations</h2>
@@ -200,6 +230,35 @@ async function fetchStats() {
                <p>Name: {user.full_name}</p>
                <p>Email: {user.email}</p>
                <p>Role: {user.role}</p>
+               {user.role === "employee" && (
+                                                <button
+                                                  onClick={() =>
+                                                    updateUserRole(
+                                                      user.id,
+                                                      "manager"
+                                                    )
+                                                  }
+                                                >
+                                                  Promote to Manager
+                                                </button>
+                                            )}
+
+                {user.role === "manager" && (
+                                                <button
+                                                  onClick={() =>
+                                                    updateUserRole(
+                                                      user.id,
+                                                      "employee"
+                                                    )
+                                                  }
+                                                >
+                                                  Demote to Employee
+                                                </button>
+                                            )}              
+
+                {user.role === "admin" && (
+                                            <p>Administrator</p>
+                                          )}                                          
                <hr />
              </div>
            ))}

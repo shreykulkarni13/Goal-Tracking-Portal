@@ -3,173 +3,312 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase/supabaseClient";
 
 function ManagerDashboard() {
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
-  useEffect(() => {
-    checkRole();
-    fetchGoals();
-  }, []);
+const [goals, setGoals] = useState([]);
+const [feedback, setFeedback] = useState("");
 
-  async function updateGoalStatus(goalId, newStatus) 
-    {  
-      console.log("GOAL ID:", goalId);
-      console.log("NEW STATUS:", newStatus);
+useEffect(() => {
+checkRole();
+fetchGoals();
+}, []);
 
-      const { data, error } = await supabase
-        .from("goals")
-        .update({
-          status: newStatus,
-        })
-        .eq("id", goalId)
-        .select();
+async function fetchGoals() {
+const { data, error } = await supabase
+.from("goals")
+.select(`         *,
+        profiles (
+          full_name,
+          department
+        )
+      `)
+.order("created_at", { ascending: false });
 
-        console.log("UPDATE DATA:", data);
-    
-      console.log("UPDATE ERROR:", error);
-    
-      if (error) {
-        alert(error.message);
-        return;
-      }
-    
-      alert(`Goal ${newStatus}!`);
-    
-      fetchGoals();
-   }    
 
-       const [goals, setGoals] = useState([]);
-     
-       const pendingGoals = goals.filter(
-       (goal) => goal.status === "pending"
-        );
-     
-       const approvedGoals = goals.filter(
-       (goal) => goal.status === "approved"
-        );
-     
-       const rejectedGoals = goals.filter(
-       (goal) => goal.status === "rejected"
-        );
+console.log("GOALS:", data);
+console.log("GOALS ERROR:", error);
 
-  async function fetchGoals() 
-  {
-       const { data, error } = await supabase
-         .from("goals")
-         .select("*");
-     
-       console.log("GOALS:", data);
-       console.log("GOALS ERROR:", error);
-     
-       if (data) {
-         setGoals(data);
-       }
-  }
+if (error) {
+  console.log(error);
+  return;
+}
 
-  async function checkRole() {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+setGoals(data);
 
-    if (!session) {
-      navigate("/");
-      return;
-    }
+}
 
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", session.user.id)
-      .single();
+async function updateGoalStatus(goalId, newStatus) {
+const { error } = await supabase
+.from("goals")
+.update({
+status: newStatus,
+})
+.eq("id", goalId);
 
-    console.log("ROLE:", data);
-    console.log("ERROR:", error);
 
-    if (data?.role !== "manager") {
-      alert("Access Denied!");
-      navigate("/");
-      return;
-    }
-  }
+console.log("UPDATE ERROR:", error);
 
-  return (
-    <div>
-      
-      <h1>Manager Dashboard</h1>
+if (error) {
+  alert(error.message);
+  return;
+}
 
-      <h2>Pending Goals</h2>
+alert(`Goal ${newStatus}!`);
 
-        {pendingGoals.map((goal) => (
-          <div key={goal.id}>
-            <p>Title: {goal.title}</p>
-        
-            <button
-              onClick={() =>
-                updateGoalStatus(goal.id, "approved")
-              }
-            >
-              Approve
-            </button>
-        
-            <button
-              onClick={() =>
-                updateGoalStatus(goal.id, "rejected")
-              }
-            >
-              Reject
-            </button>
-        
-            <hr />
-          </div>
-        ))}
-          {pendingGoals.length === 0 && <p>No pending goals.</p>}   
+fetchGoals();
 
-      <h2>Approved Goals</h2>
+}
 
-        {approvedGoals.map((goal) => (
-          <div key={goal.id}>
-            <p>Title: {goal.title}</p>
-        
-            <button
-              onClick={() =>
-                updateGoalStatus(goal.id, "pending")
-              }
-            >
-              Reopen
-            </button>
-        
-            <hr />
-          </div>
-        ))}
-         {approvedGoals.length === 0 && <p>No approved goals.</p>}
+async function addFeedback(goalId) {
+const { error } = await supabase
+.from("goals")
+.update({
+feedback: feedback,
+})
+.eq("id", goalId);
 
-      <h2>Rejected Goals</h2>
 
-        {rejectedGoals.map((goal) => (
-         <div key={goal.id}>
-           <p>Title: {goal.title}</p>
-       
-           <button
-             onClick={() =>
-               updateGoalStatus(goal.id, "pending")
-             }
-           >
-             Reopen
-           </button>
-       
-           <hr />
-         </div>
-        ))}
-          {rejectedGoals.length === 0 && <p>No rejected goals.</p>} 
+console.log("FEEDBACK ERROR:", error);
 
-      <button onClick={async () => {
-        await supabase.auth.signOut();
-        navigate("/");
-      }}>
-        Logout
-      </button> 
+if (error) {
+  alert(error.message);
+  return;
+}
 
+alert("Feedback Saved ✅");
+
+setFeedback("");
+
+fetchGoals();
+
+
+}
+
+async function checkRole() {
+const {
+data: { session },
+} = await supabase.auth.getSession();
+
+
+if (!session) {
+  navigate("/");
+  return;
+}
+
+const { data, error } = await supabase
+  .from("profiles")
+  .select("role")
+  .eq("id", session.user.id)
+  .single();
+
+console.log("ROLE:", data);
+console.log("ERROR:", error);
+
+if (data?.role !== "manager") {
+  alert("Access Denied!");
+  navigate("/");
+}
+
+
+}
+
+const pendingGoals = goals.filter(
+(goal) => goal.status === "pending"
+);
+
+const approvedGoals = goals.filter(
+(goal) => goal.status === "approved"
+);
+
+const rejectedGoals = goals.filter(
+(goal) => goal.status === "rejected"
+);
+
+const completedGoals = goals.filter(
+(goal) => goal.status === "completed"
+);
+
+return ( 
+<div> 
+  <h1>Manager Dashboard</h1>
+
+
+  <h2>Pending Goals</h2>
+
+  {pendingGoals.length === 0 && (
+    <p>No pending goals.</p>
+  )}
+
+  {pendingGoals.map((goal) => (
+    <div key={goal.id}>
+      <p><strong>Employee:</strong> {goal.profiles?.full_name}</p>
+      <p><strong>Department:</strong> {goal.profiles?.department}</p>
+      <p><strong>Title:</strong> {goal.title}</p>
+      <p><strong>Description:</strong> {goal.description}</p>
+      <p><strong>Target Date:</strong> {goal.target_date}</p>
+      <p><strong>Feedback:</strong> {goal.feedback || "No feedback yet"}</p>
+
+      <textarea
+        placeholder="Enter feedback..."
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+      />
+
+      <br />
+
+      <button onClick={() => addFeedback(goal.id)}>
+        Save Feedback
+      </button>
+
+      <button
+        onClick={() =>
+          updateGoalStatus(goal.id, "approved")
+        }
+      >
+        Approve
+      </button>
+
+      <button
+        onClick={() =>
+          updateGoalStatus(goal.id, "rejected")
+        }
+      >
+        Reject
+      </button>
+
+      <hr />
     </div>
-  );
+  ))}
+
+  <h2>Approved Goals</h2>
+
+  {approvedGoals.length === 0 && (
+    <p>No approved goals.</p>
+  )}
+
+  {approvedGoals.map((goal) => (
+    <div key={goal.id}>
+      <p><strong>Employee:</strong> {goal.profiles?.full_name}</p>
+      <p><strong>Department:</strong> {goal.profiles?.department}</p>
+      <p><strong>Title:</strong> {goal.title}</p>
+      <p><strong>Description:</strong> {goal.description}</p>
+      <p><strong>Target Date:</strong> {goal.target_date}</p>
+      <p><strong>Feedback:</strong> {goal.feedback || "No feedback yet"}</p>
+
+      <textarea
+        placeholder="Enter feedback..."
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+      />
+
+      <br />
+
+      <button onClick={() => addFeedback(goal.id)}>
+        Save Feedback
+      </button>
+
+      <button
+        onClick={() =>
+          updateGoalStatus(goal.id, "pending")
+        }
+      >
+        Reopen
+      </button>
+
+      <hr />
+    </div>
+  ))}
+
+  <h2>Rejected Goals</h2>
+
+  {rejectedGoals.length === 0 && (
+    <p>No rejected goals.</p>
+  )}
+
+  {rejectedGoals.map((goal) => (
+    <div key={goal.id}>
+      <p><strong>Employee:</strong> {goal.profiles?.full_name}</p>
+      <p><strong>Department:</strong> {goal.profiles?.department}</p>
+      <p><strong>Title:</strong> {goal.title}</p>
+      <p><strong>Description:</strong> {goal.description}</p>
+      <p><strong>Target Date:</strong> {goal.target_date}</p>
+      <p><strong>Feedback:</strong> {goal.feedback || "No feedback yet"}</p>
+
+      <textarea
+        placeholder="Enter feedback..."
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+      />
+
+      <br />
+
+      <button onClick={() => addFeedback(goal.id)}>
+        Save Feedback
+      </button>
+
+      <button
+        onClick={() =>
+          updateGoalStatus(goal.id, "pending")
+        }
+      >
+        Reopen
+      </button>
+
+      <hr />
+    </div>
+  ))}
+
+  <h2>Completed Goals</h2>
+
+  {completedGoals.length === 0 && (
+    <p>No completed goals.</p>
+  )}
+
+  {completedGoals.map((goal) => (
+    <div key={goal.id}>
+      <p><strong>Employee:</strong> {goal.profiles?.full_name}</p>
+      <p><strong>Department:</strong> {goal.profiles?.department}</p>
+      <p><strong>Title:</strong> {goal.title}</p>
+      <p><strong>Description:</strong> {goal.description}</p>
+      <p><strong>Target Date:</strong> {goal.target_date}</p>
+      <p><strong>Feedback:</strong> {goal.feedback || "No feedback yet"}</p>
+
+      <textarea
+        placeholder="Enter feedback..."
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+      />
+
+      <br />
+
+      <button onClick={() => addFeedback(goal.id)}>
+        Save Feedback
+      </button>
+
+      <button
+        onClick={() =>
+          updateGoalStatus(goal.id, "pending")
+        }
+      >
+        Reopen
+      </button>
+
+      <hr />
+    </div>
+  ))}
+
+  <button
+    onClick={async () => {
+      await supabase.auth.signOut();
+      navigate("/");
+    }}
+  >
+    Logout
+  </button>
+</div>
+
+
+);
 }
 
 export default ManagerDashboard;
