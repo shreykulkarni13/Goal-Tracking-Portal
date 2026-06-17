@@ -106,29 +106,37 @@ function EmployeeDashboard() {
       navigate("/");
     }
   }
+             
+async function updateProgress(goalId) {
+  const progressNumber = Number(progressValue);
 
+  let newStatus = "approved";
 
-     async function updateProgress(goalId) {
-               const { error } = await supabase
-                 .from("goals")
-                 .update({
-                   progress: Number(progressValue),
-                 })
-                 .eq("id", goalId);
-             
-               console.log("PROGRESS ERROR:", error);
-             
-               if (error) {
-                 alert(error.message);
-                 return;
-               }
-             
-               alert("Progress Updated ✅");
-             
-               setProgressValue("");
-             
-               fetchGoals();
-             } 
+  if (progressNumber >= 100) {
+    newStatus = "completed";
+  }
+
+  const { error } = await supabase
+    .from("goals")
+    .update({
+      progress: progressNumber,
+      status: newStatus,
+    })
+    .eq("id", goalId);
+
+  console.log("PROGRESS ERROR:", error);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Progress Updated ✅");
+
+  setProgressValue("");
+
+  fetchGoals();
+}
 
   const pendingGoals = goals.filter(
     (goal) => goal.status === "pending"

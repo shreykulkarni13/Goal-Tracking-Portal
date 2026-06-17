@@ -193,6 +193,13 @@ return (
       <p><strong>Title:</strong> {goal.title}</p>
       <p><strong>Description:</strong> {goal.description}</p>
       <p><strong>Target Date:</strong> {goal.target_date}</p>
+      <p>Progress: {goal.progress || 0}%</p>
+
+        <progress
+          value={goal.progress || 0}
+          max="100"
+        ></progress>
+      
       <p><strong>Feedback:</strong> {goal.feedback || "No feedback yet"}</p>
 
       <textarea
