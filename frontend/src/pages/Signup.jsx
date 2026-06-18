@@ -182,17 +182,19 @@ function Signup() {
 <div className="input-box">
   <Briefcase size={18} />
 
-  <select
-    value={department}
-    onChange={(e) => setDepartment(e.target.value)}
-  >
-    <option value="">Select Department</option>
-    <option value="IT">IT</option>
-    <option value="CSE">CSE</option>
-    <option value="HR">HR</option>
-    <option value="Finance">Finance</option>
-    <option value="Marketing">Marketing</option>
-  </select>
+<select
+  value={department}
+  onChange={(e) => setDepartment(e.target.value)}
+  className={department ? "department-selected" : ""}
+  required
+>
+  <option value="">Select Department</option>
+  <option value="IT">IT</option>
+  <option value="CSE">CSE</option>
+  <option value="HR">HR</option>
+  <option value="Finance">Finance</option>
+  <option value="Marketing">Marketing</option>
+</select>
 </div>
 
 

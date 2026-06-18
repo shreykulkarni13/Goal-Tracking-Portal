@@ -49,8 +49,8 @@ input {
 /* ─── Toast ──────────────────────────────────────────────────────────────── */
 .toast {
   position: fixed;
-  top: 24px;
-  right: 24px;
+  top: 25px;
+  right: 25px;
   z-index: 9999;
   padding: 14px 18px;
   border-radius: 14px;
@@ -287,6 +287,29 @@ body {
   font-size: 15px;
   font-weight: 400;
   cursor: pointer;
+  appearance: none;
+}
+
+.input-box select.department-selected {
+  color: var(--text);
+}
+
+.input-box svg {
+  color: var(--muted);
+}
+
+.input-box:focus-within svg {
+  color: var(--primary);
+}
+
+.input-box select option {
+  background: #172033;
+  color: white;
+}
+
+.light-theme .input-box select option {
+  background: white;
+  color: #111827;
 }
 
 .input-box select option {

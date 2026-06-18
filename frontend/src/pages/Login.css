@@ -50,8 +50,8 @@ textarea {
 
 .toast {
   position: fixed;
-  top: 24px;
-  right: 24px;
+  top: 25px;
+  right: 25px;
   z-index: 9999;
   padding: 14px 18px;
   border-radius: 14px;
