@@ -74,6 +74,15 @@ function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [adminProfile, setAdminProfile] = useState(null);
+  const [toast, setToast] = useState(null);
+
+  function showToast(message, type = "success") {
+  setToast({ message, type });
+
+  setTimeout(() => {
+    setToast(null);
+  }, 3500);
+}
 
   /* ════════════════════════════════════════════════════════════════════
      ORIGINAL SUPABASE LOGIC — preserved exactly, only extended minimally
@@ -164,11 +173,11 @@ function AdminDashboard() {
       .eq("id", userId);
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
-    alert(`User ${newStatus}!`);
+    showToast(`User ${newStatus}!`, "success");
 
     fetchStats();
   }
@@ -182,11 +191,11 @@ function AdminDashboard() {
       .eq("id", userId);
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
-    alert(`Role changed to ${newRole}`);
+    showToast(`Role changed to ${newRole}`, "success");
 
     fetchStats();
   }
@@ -208,7 +217,7 @@ function AdminDashboard() {
       .single();
 
     if (error || data?.role !== "admin") {
-      alert("Access Denied!");
+      showToast("Access Denied!", "error");
       navigate("/");
       return;
     }
@@ -270,6 +279,11 @@ function scrollTo(id) {
   ═══════════════════════════════════════════════════════════════════ */
   return (
     <div className="ad-root">
+       {toast && (
+      <div className={`toast toast-${toast.type}`}>
+        {toast.message}
+      </div>
+    )}
       {sidebarOpen && (
         <div className="ad-overlay" onClick={() => setSidebarOpen(false)} />
       )}

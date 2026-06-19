@@ -54,6 +54,16 @@ function EmployeeDashboard() {
   const [targetDate, setTargetDate] = useState("");
   const [goals, setGoals] = useState([]);
   const [progressValues, setProgressValues] = useState({});
+  const [toast, setToast] = useState(null);
+
+  function showToast(message, type = "success") 
+    {
+        setToast({ message, type });
+    
+        setTimeout(() => {
+          setToast(null);
+        }, 3500);
+    }
 
   useEffect(() => {
     document.body.className = darkMode ? "dark-theme" : "light-theme";
@@ -81,7 +91,7 @@ function EmployeeDashboard() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
@@ -105,7 +115,7 @@ function EmployeeDashboard() {
       .single();
 
     if (error || data?.role !== "employee") {
-      alert("Access Denied!");
+      showToast("Access Denied!", "error");
       navigate("/");
       return;
     }
@@ -119,7 +129,7 @@ function EmployeeDashboard() {
     } = await supabase.auth.getSession();
 
     if (!title || !targetDate) {
-      alert("Please enter goal title and target date.");
+      showToast("Please enter goal title and target date.", "error");
       return;
     }
 
@@ -135,11 +145,11 @@ function EmployeeDashboard() {
     ]);
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
-    alert("Goal Created Successfully 🎉");
+    showToast("Goal Created Successfully 🎉", "success");
 
     setTitle("");
     setDescription("");
@@ -151,7 +161,7 @@ function EmployeeDashboard() {
     const progressNumber = Number(progressValues[goalId]);
 
     if (progressNumber < 0 || progressNumber > 100) {
-      alert("Progress must be between 0 and 100.");
+      showToast("Progress must be between 0 and 100.", "error");
       return;
     }
 
@@ -166,11 +176,11 @@ function EmployeeDashboard() {
       .eq("id", goalId);
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
-    alert("Progress Updated ✅");
+    showToast("Progress Updated ✅", "success");
 
     setProgressValues((prev) => ({
       ...prev,
@@ -190,11 +200,11 @@ function EmployeeDashboard() {
       .eq("id", goalId);
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
-    alert("Goal Completed 🎉");
+    showToast("Goal Completed 🎉", "success");
     fetchGoals();
   }
 
@@ -236,6 +246,11 @@ function EmployeeDashboard() {
 
   return (
     <div className="ed-root">
+      {toast && (
+        <div className={`toast toast-${toast.type}`}>
+          {toast.message}
+        </div>
+      )}
       {sidebarOpen && (
         <div className="ed-overlay" onClick={() => setSidebarOpen(false)} />
       )}

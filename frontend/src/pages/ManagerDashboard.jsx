@@ -60,6 +60,15 @@ function ManagerDashboard() {
   const [sidebarOpen,  setSidebarOpen]  = useState(false);
   const [loading,      setLoading]      = useState(true);
   const [managerName,  setManagerName]  = useState("Manager");
+  const [toast,        setToast]        = useState(null);
+
+  function showToast(message, type = "success") {
+  setToast({ message, type });
+
+  setTimeout(() => {
+    setToast(null);
+  }, 3500);
+}
 
   /* ════════════════════════════════════════════════════════════════════
      ORIGINAL SUPABASE LOGIC — untouched
@@ -114,11 +123,11 @@ function ManagerDashboard() {
       .eq("id", goalId);
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
-    alert(`Goal ${newStatus}!`);
+    showToast(`Goal ${newStatus}!`, "success");
     fetchGoals();
   }
 
@@ -131,11 +140,11 @@ function ManagerDashboard() {
       .eq("id", goalId);
 
     if (error) {
-      alert(error.message);
+      showToast(error.message, "error");
       return;
     }
 
-    alert("Feedback Saved ✅");
+    showToast("Feedback Saved ✅", "success");
     setFeedbackValues((prev) => ({ ...prev, [goalId]: "" }));
     fetchGoals();
   }
@@ -157,7 +166,7 @@ function ManagerDashboard() {
       .single();
 
     if (error || data?.role !== "manager") {
-      alert("Access Denied!");
+      showToast("Access Denied!", "error");
       navigate("/");
       return;
     }
@@ -197,6 +206,11 @@ function ManagerDashboard() {
   ═══════════════════════════════════════════════════════════════════ */
   return (
     <div className="md-root">
+       {toast && (
+      <div className={`toast toast-${toast.type}`}>
+        {toast.message}
+      </div>
+    )}
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="md-overlay" onClick={() => setSidebarOpen(false)} />
