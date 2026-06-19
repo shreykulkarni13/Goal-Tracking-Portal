@@ -92,7 +92,7 @@ function Signup() {
         return;
       }
 
-      showToast("Account created! Awaiting approval. ðŸŽ‰", "success");
+      showToast("Account created! Awaiting approval. 🎉", "success");
 
       setFullName("");
       setEmail("");
