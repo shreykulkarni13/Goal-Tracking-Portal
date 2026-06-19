@@ -74,29 +74,29 @@ function EmployeeDashboard() {
     fetchGoals();
   }, []);
 
-  async function fetchGoals() {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+async function fetchGoals() {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-    if (!session) {
-      navigate("/");
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("goals")
-      .select("*")
-      .eq("user_id", session.user.id)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      showToast(error.message, "error");
-      return;
-    }
-
-    setGoals(data || []);
+  if (!session) {
+    navigate("/");
+    return;
   }
+
+  const { data, error } = await supabase
+    .from("goals")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    showToast(error.message, "error");
+    return;
+  }
+
+  setGoals(data || []);
+}
 
   async function checkRole() {
     const {
