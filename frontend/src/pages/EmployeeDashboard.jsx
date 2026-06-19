@@ -44,7 +44,7 @@ const STATUS_CONFIG = {
 function EmployeeDashboard() {
   const navigate = useNavigate();
 
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [activeNav, setActiveNav] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

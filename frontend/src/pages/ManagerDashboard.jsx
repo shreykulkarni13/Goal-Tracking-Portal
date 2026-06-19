@@ -55,7 +55,7 @@ function ManagerDashboard() {
   const [feedbackValues, setFeedbackValues] = useState({});
 
   /* ── UI state ── */
-  const [darkMode,     setDarkMode]     = useState(true);
+  const [darkMode,     setDarkMode]     = useState(false);
   const [activeNav,    setActiveNav]    = useState("dashboard");
   const [sidebarOpen,  setSidebarOpen]  = useState(false);
   const [loading,      setLoading]      = useState(true);
