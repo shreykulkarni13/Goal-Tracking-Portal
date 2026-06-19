@@ -6,6 +6,16 @@ function Dashboard()
 {
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
+  const [toast, setToast] = useState(null);
+
+    function showToast(message, type = "success") 
+    {
+        setToast({ message, type });
+    
+        setTimeout(() => {
+          setToast(null);
+        }, 3500);
+    }
 
   useEffect(() => {
     checkUser();
@@ -56,7 +66,7 @@ function Dashboard()
  {
   await supabase.auth.signOut();
 
-  alert("Logged out successfully!");
+  showToast("Logged out successfully!", "success");
 
   navigate("/");
  }
