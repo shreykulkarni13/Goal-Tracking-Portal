@@ -1,0 +1,67 @@
+/* Shared restrained palette for role dashboards. */
+.ad-root, .md-root, .ed-root {
+  --bg: #f4f6f6;
+  --bg-alt: #edf1f1;
+  --text: #1d3035;
+  --text-2: #42575c;
+  --muted: #748387;
+  --card: #ffffff;
+  --card-border: #e1e7e7;
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e1e7e7;
+  --input: #ffffff;
+  --input-border: #d9e1e1;
+  --primary: #49696e;
+  --primary-dark: #36565b;
+  --primary-glow: rgba(73, 105, 110, .10);
+  --danger: #966465;
+  --danger-glow: rgba(150, 100, 101, .09);
+  --warning: #8a7853;
+  --warning-glow: rgba(138, 120, 83, .10);
+  --purple: #697080;
+  --purple-glow: rgba(105, 112, 128, .09);
+  --indigo: #586e79;
+  --indigo-glow: rgba(88, 110, 121, .09);
+  --blue: #536e79;
+}
+.ad-root .ad-sidebar, .md-root .md-sidebar, .ed-root .ed-sidebar { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.ad-root .ad-brand-icon, .md-root .md-brand-icon, .ed-root .ed-brand-icon { color: #fff; border-radius: 8px; box-shadow: none; }
+.ad-root .ad-welcome-card, .md-root .md-welcome-card, .ed-root .ed-welcome-card { background: #e9efef; border-color: #dce5e5; box-shadow: none; }
+.ad-root .ad-stat-card, .md-root .md-stat-card, .ed-root .ed-stat-card,
+.ad-root .ad-goal-card, .md-root .md-goal-card, .ed-root .ed-goal-card,
+.ad-root .ad-people-card, .ad-root .ad-user-mini-card { box-shadow: 0 1px 3px rgba(25, 45, 50, .035); }
+.ad-root .ad-stat-card:hover, .md-root .md-stat-card:hover, .ed-root .ed-stat-card:hover,
+.ad-root .ad-goal-card:hover, .md-root .md-goal-card:hover, .ed-root .ed-goal-card:hover,
+.ad-root .ad-people-card:hover { transform: none; box-shadow: 0 2px 7px rgba(25, 45, 50, .06); }
+.ad-root .ad-stat-icon, .md-root .md-stat-icon, .ed-root .ed-stat-icon { color: #526c71 !important; background: #edf2f2 !important; }
+.ad-root .ad-btn, .md-root .md-btn, .ed-root .ed-btn-primary, .ed-root .ed-btn-secondary, .ed-root .ed-btn-complete {
+  border-radius: 6px; box-shadow: none; transition: background-color .15s ease, border-color .15s ease;
+}
+.ad-root .ad-btn-approve, .ad-root .ad-btn-reject, .ad-root .ad-btn-promote, .ad-root .ad-btn-demote,
+.md-root .md-btn-approve, .md-root .md-btn-reject, .md-root .md-btn-feedback, .md-root .md-btn-reopen,
+.ed-root .ed-btn-complete { color: #42585d; background: #edf1f1; border: 1px solid #dce4e4; }
+.ad-root .ad-btn-approve:hover, .ad-root .ad-btn-reject:hover, .ad-root .ad-btn-promote:hover, .ad-root .ad-btn-demote:hover,
+.md-root .md-btn-approve:hover, .md-root .md-btn-reject:hover, .md-root .md-btn-feedback:hover, .md-root .md-btn-reopen:hover,
+.ed-root .ed-btn-complete:hover { color: #263d42; background: #e3eaea; }
+.ad-root .ad-btn-primary, .md-root .md-btn-primary, .ed-root .ed-btn-primary { color: #fff; background: #49696e; box-shadow: none; }
+.ad-root .ad-btn-primary:hover, .md-root .md-btn-primary:hover, .ed-root .ed-btn-primary:hover { background: #36565b; box-shadow: none; transform: none; }
+.ad-root .ad-progress-fill, .md-root .md-progress-fill, .ed-root .ed-progress-fill { background: #6b898d; }
+.ad-root .ad-nav-item.active, .md-root .md-nav-item.active, .ed-root .ed-nav-item.active { color: #34545a; background: #edf2f2; box-shadow: none; }
+.ad-root .ad-card, .md-root .md-card, .ed-root .ed-card { border-radius: 9px; }
+.ad-root *, .md-root *, .ed-root * { animation-duration: .01ms !important; }
+.pf-page { --bg: #f4f6f6; --bg-alt: #edf1f1; --text: #1d3035; --text-2: #42575c; --muted: #748387; --card: #fff; --card-border: #e1e7e7; --primary: #49696e; --primary-dark: #36565b; --primary-glow: rgba(73,105,110,.1); background: var(--bg); }
+.pf-page .glow, .pf-page .grid-bg { display: none; }
+.pf-page .pf-card { border-radius: 9px; box-shadow: 0 1px 4px rgba(25,45,50,.05); }
+.pf-page .brand-icon { color: #fff; background: #244c52; box-shadow: none; border-radius: 8px; }
+.pf-page .pf-btn-primary { color: #fff; background: #49696e; box-shadow: none; border-radius: 6px; }
+.pf-page .pf-btn-primary:hover:not(:disabled) { background: #36565b; box-shadow: none; transform: none; }
+.pf-page .pf-btn-logout { border-radius: 6px; box-shadow: none; }
+.signup-page { --bg: #f4f6f6; --text: #1d3035; --muted: #748387; --card: #fff; --border: #e1e7e7; --primary: #49696e; --primary-dark: #36565b; --input: #fff; min-height: 100vh; height: auto; overflow: auto; }
+.signup-page .glow, .signup-page .grid-bg, .signup-page .signup-card-glow { display: none; }
+.signup-page .brand-icon { color: #fff; background: #244c52; box-shadow: none; border-radius: 8px; }
+.signup-page .signup-card { border: 1px solid #e3e9e9; border-radius: 12px; box-shadow: 0 12px 36px rgba(28,53,59,.06); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.signup-page .signup-btn { color: #fff; background: #244c52; box-shadow: none; border-radius: 7px; }
+.signup-page .signup-btn:hover:not(:disabled) { background: #1a3c41; box-shadow: none; transform: none; }
+.signup-page .social-row, .signup-page .divider { display: none; }
+.signup-page .signup-card:hover { transform: none; }
+@media (prefers-reduced-motion: reduce) { .ad-root *, .md-root *, .ed-root * { scroll-behavior: auto !important; } }

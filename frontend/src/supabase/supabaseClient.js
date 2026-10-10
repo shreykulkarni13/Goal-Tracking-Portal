@@ -15,9 +15,6 @@ if (!supabaseKey) {
   );
 }
 
-console.log("Supabase URL:", supabaseUrl);
-console.log("Supabase Connected ✅");
-
 export const supabase = createClient(
   supabaseUrl,
   supabaseKey,

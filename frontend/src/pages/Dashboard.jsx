@@ -28,22 +28,17 @@ function Dashboard()
     data: { session },
   } = await supabase.auth.getSession();
 
-  console.log("SESSION:", session);
-
   if (!session) 
   {
     navigate("/");
     return;
   }
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", session.user.id)
     .single();
-
-  console.log("PROFILE:", data);
-  console.log("PROFILE ERROR:", error);
 
   if (data)
      {

@@ -59,7 +59,11 @@ function Signup() {
     try {
       setLoading(true);
 
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: fullName.trim(), department, role: "employee" } },
+      });
 
       if (error) {
         showToast(error.message, "error");
@@ -86,13 +90,12 @@ function Signup() {
         },
       ]);
 
-      if (insertError) {
-        showToast(insertError.message, "error");
-        setLoading(false);
-        return;
-      }
+      // With email confirmation enabled Supabase returns no session, so RLS may
+      // prevent this insert. Auth metadata is retained for a profile bootstrap
+      // trigger; report the confirmation step instead of implying signup failed.
+      if (insertError && data.session) throw insertError;
 
-      showToast("Account created! Awaiting approval. 🎉", "success");
+      showToast(data.session ? "Account created! Awaiting approval." : "Account created. Check your email to confirm, then await approval.", "success");
 
       setFullName("");
       setEmail("");

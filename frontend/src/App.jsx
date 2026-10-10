@@ -6,6 +6,7 @@ import EmployeeDashboard from "./pages/EmployeeDashboard";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
+import "./professional-dashboard.css";
 
 function App() {
   return (
